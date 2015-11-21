@@ -3,7 +3,7 @@
 <body>
 
 <?php
-echo "Ryan PHP script!";
+echo "Ryan PHP script2!\n";
 ?>
 <?php
 $mysql = new mysqli("localhost", "root");
