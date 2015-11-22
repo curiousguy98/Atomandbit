@@ -51,7 +51,7 @@ class wechatCallbackapiTest
                     break;
                 case "text":
                    if (strstr($postObj->Content, "第三方")){
-                        $result = $this->relayPart3("http://sae.abi.org/test.php".'?'.$_SERVER['QUERY_STRING'], $postStr);
+                        $result = $this->relayPart3("http://www.fangbei.org/test.php".'?'.$_SERVER['QUERY_STRING'], $postStr);
                     }else{
                         $result = $this->receiveText($postObj);
                     }
@@ -90,7 +90,7 @@ class wechatCallbackapiTest
         switch ($object->Event)
         {
             case "subscribe":
-                $content = "欢迎关注原子比特工厂 ";
+                $content = "欢迎关注方倍工作室 ";
                 $content .= (!empty($object->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$object->EventKey)):"";
                 break;
             case "unsubscribe":
@@ -101,7 +101,7 @@ class wechatCallbackapiTest
                 {
                     case "COMPANY":
                         $content = array();
-                        $content[] = array("Title"=>"原子比特工厂", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+                        $content[] = array("Title"=>"方倍工作室", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
                         break;
                     default:
                         $content = "点击菜单：".$object->EventKey;
@@ -172,7 +172,7 @@ class wechatCallbackapiTest
 
         //自动回复模式
         if (strstr($keyword, "文本")){
-            $content = "这是个文本Ryan消息";
+            $content = "这是个文本消息";
         }else if (strstr($keyword, "表情")){
             $content = "中国：".$this->bytes_to_emoji(0x1F1E8).$this->bytes_to_emoji(0x1F1F3)."\n仙人掌：".$this->bytes_to_emoji(0x1F335);
         }else if (strstr($keyword, "单图文")){
@@ -187,7 +187,7 @@ class wechatCallbackapiTest
             $content = array();
             $content = array("Title"=>"最炫民族风", "Description"=>"歌手：凤凰传奇", "MusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3", "HQMusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3"); 
         }else{
-            $content = date("Y-m-d H:i:s",time())."\nOpenID：".$object->FromUserName."\n 原子比特工厂";
+            $content = date("Y-m-d H:i:s",time())."\nOpenID：".$object->FromUserName."\n技术支持 方倍工作室";
         }
 
         if(is_array($content)){
