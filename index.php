@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-
+HELLO жпнд
 <?php
 echo "Ryan PHP script2!\n";
 ?>
