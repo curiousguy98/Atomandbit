@@ -1,4 +1,6 @@
-<?php
+ï»¿<?php
+
+header("content-type:text/html;charset:utf-8");
 define("TOKEN", "kmEJ7hBBg8g7gG1g0jvW1V71tvt1t1e6");
 
 $wechatObj = new wechatCallbackapiTest();
@@ -10,7 +12,7 @@ if (!isset($_GET['echostr'])) {
 
 class wechatCallbackapiTest
 {
-    //ÑéÖ¤Ç©Ãû
+    //éªŒè¯ç­¾å
     public function valid()
     {
         $echoStr = $_GET["echostr"];
@@ -28,7 +30,7 @@ class wechatCallbackapiTest
         }
     }
 
-    //ÏìÓ¦ÏûÏ¢
+    //å“åº”æ¶ˆæ¯
     public function responseMsg()
     {
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
@@ -38,19 +40,19 @@ class wechatCallbackapiTest
             $RX_TYPE = trim($postObj->MsgType);
 
             if (($postObj->MsgType == "event") && ($postObj->Event == "subscribe" || $postObj->Event == "unsubscribe")){
-                //¹ıÂË¹Ø×¢ºÍÈ¡Ïû¹Ø×¢ÊÂ¼ş
+                //è¿‡æ»¤å…³æ³¨å’Œå–æ¶ˆå…³æ³¨äº‹ä»¶
             }else{
                 
             }
             
-            //ÏûÏ¢ÀàĞÍ·ÖÀë
+            //æ¶ˆæ¯ç±»å‹åˆ†ç¦»
             switch ($RX_TYPE)
             {
                 case "event":
                     $result = $this->receiveEvent($postObj);
                     break;
                 case "text":
-                   if (strstr($postObj->Content, "µÚÈı·½")){
+                   if (strstr($postObj->Content, "ç¬¬ä¸‰æ–¹")){
                         $result = $this->relayPart3("http://www.fangbei.org/test.php".'?'.$_SERVER['QUERY_STRING'], $postStr);
                     }else{
                         $result = $this->receiveText($postObj);
@@ -83,65 +85,65 @@ class wechatCallbackapiTest
         }
     }
 
-    //½ÓÊÕÊÂ¼şÏûÏ¢
+    //æ¥æ”¶äº‹ä»¶æ¶ˆæ¯
     private function receiveEvent($object)
     {
         $content = "";
         switch ($object->Event)
         {
             case "subscribe":
-                $content = "»¶Ó­¹Ø×¢·½±¶¹¤×÷ÊÒ ";
-                $content .= (!empty($object->EventKey))?("\nÀ´×Ô¶şÎ¬Âë³¡¾° ".str_replace("qrscene_","",$object->EventKey)):"";
+                $content = "æ¬¢è¿å…³æ³¨æ–¹å€å·¥ä½œå®¤ ";
+                $content .= (!empty($object->EventKey))?("\næ¥è‡ªäºŒç»´ç åœºæ™¯ ".str_replace("qrscene_","",$object->EventKey)):"";
                 break;
             case "unsubscribe":
-                $content = "È¡Ïû¹Ø×¢";
+                $content = "å–æ¶ˆå…³æ³¨";
                 break;
             case "CLICK":
                 switch ($object->EventKey)
                 {
                     case "COMPANY":
                         $content = array();
-                        $content[] = array("Title"=>"·½±¶¹¤×÷ÊÒ", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+                        $content[] = array("Title"=>"æ–¹å€å·¥ä½œå®¤", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
                         break;
                     default:
-                        $content = "µã»÷²Ëµ¥£º".$object->EventKey;
+                        $content = "ç‚¹å‡»èœå•ï¼š".$object->EventKey;
                         break;
                 }
                 break;
             case "VIEW":
-                $content = "Ìø×ªÁ´½Ó ".$object->EventKey;
+                $content = "è·³è½¬é“¾æ¥ ".$object->EventKey;
                 break;
             case "SCAN":
-                $content = "É¨Ãè³¡¾° ".$object->EventKey;
+                $content = "æ‰«æåœºæ™¯ ".$object->EventKey;
                 break;
             case "LOCATION":
-                $content = "ÉÏ´«Î»ÖÃ£ºÎ³¶È ".$object->Latitude.";¾­¶È ".$object->Longitude;
+                $content = "ä¸Šä¼ ä½ç½®ï¼šçº¬åº¦ ".$object->Latitude.";ç»åº¦ ".$object->Longitude;
                 break;
             case "scancode_waitmsg":
                 if ($object->ScanCodeInfo->ScanType == "qrcode"){
-                    $content = "É¨Âë´øÌáÊ¾£ºÀàĞÍ ¶şÎ¬Âë ½á¹û£º".$object->ScanCodeInfo->ScanResult;
+                    $content = "æ‰«ç å¸¦æç¤ºï¼šç±»å‹ äºŒç»´ç  ç»“æœï¼š".$object->ScanCodeInfo->ScanResult;
                 }else if ($object->ScanCodeInfo->ScanType == "barcode"){
                     $codeinfo = explode(",",strval($object->ScanCodeInfo->ScanResult));
                     $codeValue = $codeinfo[1];
-                    $content = "É¨Âë´øÌáÊ¾£ºÀàĞÍ ÌõĞÎÂë ½á¹û£º".$codeValue;
+                    $content = "æ‰«ç å¸¦æç¤ºï¼šç±»å‹ æ¡å½¢ç  ç»“æœï¼š".$codeValue;
                 }else{
-                    $content = "É¨Âë´øÌáÊ¾£ºÀàĞÍ ".$object->ScanCodeInfo->ScanType." ½á¹û£º".$object->ScanCodeInfo->ScanResult;
+                    $content = "æ‰«ç å¸¦æç¤ºï¼šç±»å‹ ".$object->ScanCodeInfo->ScanType." ç»“æœï¼š".$object->ScanCodeInfo->ScanResult;
                 }
                 break;
             case "scancode_push":
-                $content = "É¨ÂëÍÆÊÂ¼ş";
+                $content = "æ‰«ç æ¨äº‹ä»¶";
                 break;
             case "pic_sysphoto":
-                $content = "ÏµÍ³ÅÄÕÕ";
+                $content = "ç³»ç»Ÿæ‹ç…§";
                 break;
             case "pic_weixin":
-                $content = "Ïà²á·¢Í¼£ºÊıÁ¿ ".$object->SendPicsInfo->Count;
+                $content = "ç›¸å†Œå‘å›¾ï¼šæ•°é‡ ".$object->SendPicsInfo->Count;
                 break;
             case "pic_photo_or_album":
-                $content = "ÅÄÕÕ»òÕßÏà²á£ºÊıÁ¿ ".$object->SendPicsInfo->Count;
+                $content = "æ‹ç…§æˆ–è€…ç›¸å†Œï¼šæ•°é‡ ".$object->SendPicsInfo->Count;
                 break;
             case "location_select":
-                $content = "·¢ËÍÎ»ÖÃ£º±êÇ© ".$object->SendLocationInfo->Label;
+                $content = "å‘é€ä½ç½®ï¼šæ ‡ç­¾ ".$object->SendLocationInfo->Label;
                 break;
             default:
                 $content = "receive a new event: ".$object->Event;
@@ -160,34 +162,34 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //½ÓÊÕÎÄ±¾ÏûÏ¢
+    //æ¥æ”¶æ–‡æœ¬æ¶ˆæ¯
     private function receiveText($object)
     {
         $keyword = trim($object->Content);
-        //¶à¿Í·şÈË¹¤»Ø¸´Ä£Ê½
-        if (strstr($keyword, "ÇëÎÊÔÚÂğ") || strstr($keyword, "ÔÚÏß¿Í·ş")){
+        //å¤šå®¢æœäººå·¥å›å¤æ¨¡å¼
+        if (strstr($keyword, "è¯·é—®åœ¨å—") || strstr($keyword, "åœ¨çº¿å®¢æœ")){
             $result = $this->transmitService($object);
             return $result;
         }
 
-        //×Ô¶¯»Ø¸´Ä£Ê½
-        if (strstr($keyword, "ÎÄ±¾")){
-            $content = "ÕâÊÇ¸öÎÄ±¾ÏûÏ¢";
-        }else if (strstr($keyword, "±íÇé")){
-            $content = "ÖĞ¹ú£º".$this->bytes_to_emoji(0x1F1E8).$this->bytes_to_emoji(0x1F1F3)."\nÏÉÈËÕÆ£º".$this->bytes_to_emoji(0x1F335);
-        }else if (strstr($keyword, "µ¥Í¼ÎÄ")){
+        //è‡ªåŠ¨å›å¤æ¨¡å¼
+        if (strstr($keyword, "æ–‡æœ¬")){
+            $content = "è¿™æ˜¯ä¸ªæ–‡æœ¬æ¶ˆæ¯";
+        }else if (strstr($keyword, "è¡¨æƒ…")){
+            $content = "ä¸­å›½ï¼š".$this->bytes_to_emoji(0x1F1E8).$this->bytes_to_emoji(0x1F1F3)."\nä»™äººæŒï¼š".$this->bytes_to_emoji(0x1F335);
+        }else if (strstr($keyword, "å•å›¾æ–‡")){
             $content = array();
-            $content[] = array("Title"=>"µ¥Í¼ÎÄ±êÌâ",  "Description"=>"µ¥Í¼ÎÄÄÚÈİ", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-        }else if (strstr($keyword, "Í¼ÎÄ") || strstr($keyword, "¶àÍ¼ÎÄ")){
+            $content[] = array("Title"=>"å•å›¾æ–‡æ ‡é¢˜",  "Description"=>"å•å›¾æ–‡å†…å®¹", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+        }else if (strstr($keyword, "å›¾æ–‡") || strstr($keyword, "å¤šå›¾æ–‡")){
             $content = array();
-            $content[] = array("Title"=>"¶àÍ¼ÎÄ1±êÌâ", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-            $content[] = array("Title"=>"¶àÍ¼ÎÄ2±êÌâ", "Description"=>"", "PicUrl"=>"http://d.hiphotos.bdimg.com/wisegame/pic/item/f3529822720e0cf3ac9f1ada0846f21fbe09aaa3.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-            $content[] = array("Title"=>"¶àÍ¼ÎÄ3±êÌâ", "Description"=>"", "PicUrl"=>"http://g.hiphotos.bdimg.com/wisegame/pic/item/18cb0a46f21fbe090d338acc6a600c338644adfd.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
-        }else if (strstr($keyword, "ÒôÀÖ")){
+            $content[] = array("Title"=>"å¤šå›¾æ–‡1æ ‡é¢˜", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+            $content[] = array("Title"=>"å¤šå›¾æ–‡2æ ‡é¢˜", "Description"=>"", "PicUrl"=>"http://d.hiphotos.bdimg.com/wisegame/pic/item/f3529822720e0cf3ac9f1ada0846f21fbe09aaa3.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+            $content[] = array("Title"=>"å¤šå›¾æ–‡3æ ‡é¢˜", "Description"=>"", "PicUrl"=>"http://g.hiphotos.bdimg.com/wisegame/pic/item/18cb0a46f21fbe090d338acc6a600c338644adfd.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
+        }else if (strstr($keyword, "éŸ³ä¹")){
             $content = array();
-            $content = array("Title"=>"×îìÅÃñ×å·ç", "Description"=>"¸èÊÖ£º·ï»Ë´«Ææ", "MusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3", "HQMusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3"); 
+            $content = array("Title"=>"æœ€ç‚«æ°‘æ—é£", "Description"=>"æ­Œæ‰‹ï¼šå‡¤å‡°ä¼ å¥‡", "MusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3", "HQMusicUrl"=>"http://121.199.4.61/music/zxmzf.mp3"); 
         }else{
-            $content = date("Y-m-d H:i:s",time())."\nOpenID£º".$object->FromUserName."\n¼¼ÊõÖ§³Ö ·½±¶¹¤×÷ÊÒ";
+            $content = date("Y-m-d H:i:s",time())."\nOpenIDï¼š".$object->FromUserName."\næŠ€æœ¯æ”¯æŒ æ–¹å€å·¥ä½œå®¤";
         }
 
         if(is_array($content)){
@@ -202,7 +204,7 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //½ÓÊÕÍ¼Æ¬ÏûÏ¢
+    //æ¥æ”¶å›¾ç‰‡æ¶ˆæ¯
     private function receiveImage($object)
     {
         $content = array("MediaId"=>$object->MediaId);
@@ -210,19 +212,19 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //½ÓÊÕÎ»ÖÃÏûÏ¢
+    //æ¥æ”¶ä½ç½®æ¶ˆæ¯
     private function receiveLocation($object)
     {
-        $content = "Äã·¢ËÍµÄÊÇÎ»ÖÃ£¬¾­¶ÈÎª£º".$object->Location_Y."£»Î³¶ÈÎª£º".$object->Location_X."£»Ëõ·Å¼¶±ğÎª£º".$object->Scale."£»Î»ÖÃÎª£º".$object->Label;
+        $content = "ä½ å‘é€çš„æ˜¯ä½ç½®ï¼Œç»åº¦ä¸ºï¼š".$object->Location_Y."ï¼›çº¬åº¦ä¸ºï¼š".$object->Location_X."ï¼›ç¼©æ”¾çº§åˆ«ä¸ºï¼š".$object->Scale."ï¼›ä½ç½®ä¸ºï¼š".$object->Label;
         $result = $this->transmitText($object, $content);
         return $result;
     }
 
-    //½ÓÊÕÓïÒôÏûÏ¢
+    //æ¥æ”¶è¯­éŸ³æ¶ˆæ¯
     private function receiveVoice($object)
     {
         if (isset($object->Recognition) && !empty($object->Recognition)){
-            $content = "Äã¸Õ²ÅËµµÄÊÇ£º".$object->Recognition;
+            $content = "ä½ åˆšæ‰è¯´çš„æ˜¯ï¼š".$object->Recognition;
             $result = $this->transmitText($object, $content);
         }else{
             $content = array("MediaId"=>$object->MediaId);
@@ -231,7 +233,7 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //½ÓÊÕÊÓÆµÏûÏ¢
+    //æ¥æ”¶è§†é¢‘æ¶ˆæ¯
     private function receiveVideo($object)
     {
         $content = array("MediaId"=>$object->MediaId, "ThumbMediaId"=>$object->ThumbMediaId, "Title"=>"", "Description"=>"");
@@ -239,15 +241,15 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //½ÓÊÕÁ´½ÓÏûÏ¢
+    //æ¥æ”¶é“¾æ¥æ¶ˆæ¯
     private function receiveLink($object)
     {
-        $content = "Äã·¢ËÍµÄÊÇÁ´½Ó£¬±êÌâÎª£º".$object->Title."£»ÄÚÈİÎª£º".$object->Description."£»Á´½ÓµØÖ·Îª£º".$object->Url;
+        $content = "ä½ å‘é€çš„æ˜¯é“¾æ¥ï¼Œæ ‡é¢˜ä¸ºï¼š".$object->Title."ï¼›å†…å®¹ä¸ºï¼š".$object->Description."ï¼›é“¾æ¥åœ°å€ä¸ºï¼š".$object->Url;
         $result = $this->transmitText($object, $content);
         return $result;
     }
 
-    //»Ø¸´ÎÄ±¾ÏûÏ¢
+    //å›å¤æ–‡æœ¬æ¶ˆæ¯
     private function transmitText($object, $content)
     {
         if (!isset($content) || empty($content)){
@@ -266,7 +268,7 @@ class wechatCallbackapiTest
         return $result;
     }
 
-    //»Ø¸´Í¼ÎÄÏûÏ¢
+    //å›å¤å›¾æ–‡æ¶ˆæ¯
     private function transmitNews($object, $newsArray)
     {
         if(!is_array($newsArray)){
@@ -297,7 +299,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´ÒôÀÖÏûÏ¢
+    //å›å¤éŸ³ä¹æ¶ˆæ¯
     private function transmitMusic($object, $musicArray)
     {
         if(!is_array($musicArray)){
@@ -324,7 +326,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´Í¼Æ¬ÏûÏ¢
+    //å›å¤å›¾ç‰‡æ¶ˆæ¯
     private function transmitImage($object, $imageArray)
     {
         $itemTpl = "<Image>
@@ -345,7 +347,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´ÓïÒôÏûÏ¢
+    //å›å¤è¯­éŸ³æ¶ˆæ¯
     private function transmitVoice($object, $voiceArray)
     {
         $itemTpl = "<Voice>
@@ -365,7 +367,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´ÊÓÆµÏûÏ¢
+    //å›å¤è§†é¢‘æ¶ˆæ¯
     private function transmitVideo($object, $videoArray)
     {
         $itemTpl = "<Video>
@@ -389,7 +391,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´¶à¿Í·şÏûÏ¢
+    //å›å¤å¤šå®¢æœæ¶ˆæ¯
     private function transmitService($object)
     {
         $xmlTpl = "<xml>
@@ -402,7 +404,7 @@ $item_str    </Articles>
         return $result;
     }
 
-    //»Ø¸´µÚÈı·½½Ó¿ÚÏûÏ¢
+    //å›å¤ç¬¬ä¸‰æ–¹æ¥å£æ¶ˆæ¯
     private function relayPart3($url, $rawData)
     {
         $headers = array("Content-Type: text/xml; charset=utf-8");
@@ -417,7 +419,7 @@ $item_str    </Articles>
         return $output;
     }
 
-    //×Ö½Ú×ªEmoji±íÇé
+    //å­—èŠ‚è½¬Emojiè¡¨æƒ…
     function bytes_to_emoji($cp)
     {
         if ($cp > 0x10000){       # 4 bytes
@@ -431,7 +433,7 @@ $item_str    </Articles>
         }
     }
 
-    //ÈÕÖ¾¼ÇÂ¼
+    //æ—¥å¿—è®°å½•
     private function logger($log_content)
     {
         if(isset($_SERVER['HTTP_APPNAME'])){   //SAE
@@ -446,4 +448,4 @@ $item_str    </Articles>
         }
     }
 }
-?>
+?> 
